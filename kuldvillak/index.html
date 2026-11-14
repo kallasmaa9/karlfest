@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>html{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>html{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}a.tool{text-decoration:none;display:inline-flex;align-items:center;box-sizing:border-box}</style>
 <title>Karli Kuldvillak</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -439,7 +439,7 @@ function renderTools() {
   } else {
     const reset = el("button", { type: "button", className: "tool", textContent: tr("restart") });
     reset.addEventListener("click", () => { confirming = true; renderTools(); });
-    kids.push(reset);
+    kids.push(reset); kids.push(el("a", { className: "tool", href: "../", textContent: "Avaleht" }));
     if (document.documentElement.requestFullscreen) {
       const fs = el("button", { type: "button", className: "tool", textContent: document.fullscreenElement ? tr("exitfs") : tr("fs") });
       fs.addEventListener("click", () => {

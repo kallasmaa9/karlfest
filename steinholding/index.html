@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>html{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>html{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}a.tool{text-decoration:none;display:inline-flex;align-items:center;box-sizing:border-box}</style>
 <title>Novemberfest Steinholding</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -467,7 +467,7 @@ function renderCtrl() {
   }
   if (S.n === 2) kids.push(el("button", { className: "tool", type: "button", onclick: () => setBoard(!showBoard) }, [showBoard ? "Peida edetabel" : "Edetabel", el("span", { className: "k", textContent: "E" })]));
   if (document.documentElement.requestFullscreen) kids.push(el("button", { className: "tool", type: "button", textContent: document.fullscreenElement ? "Välju täisekraanist" : "Täisekraan", onclick: () => { const p = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); p && p.catch && p.catch(() => {}); } }));
-  c.replaceChildren(...kids);
+  kids.push(el("a", { className: "tool", href: "../", textContent: "Avaleht" })); c.replaceChildren(...kids);
 }
 document.addEventListener("fullscreenchange", renderCtrl);
 

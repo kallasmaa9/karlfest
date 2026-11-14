@@ -15,9 +15,10 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Helvetica,
 h1{margin:10px 0 0;font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clamp(44px,7vw,92px);line-height:1;text-align:center}
 h1 em{color:var(--gold)}
 .games{margin-top:clamp(24px,5vh,56px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;width:min(1200px,100%)}
-.game{display:flex;flex-direction:column;gap:10px;justify-content:space-between;min-height:210px;padding:26px;border-radius:24px;color:#fff;text-decoration:none;background:var(--c);box-shadow:0 14px 34px rgba(20,20,20,.14);transition:transform .15s}
+.game{position:relative;display:flex;flex-direction:column;gap:10px;justify-content:space-between;min-height:210px;padding:26px;border-radius:24px;color:#fff;text-decoration:none;background:var(--c);box-shadow:0 14px 34px rgba(20,20,20,.14);transition:transform .15s}
 .game:hover,.game:focus-visible{transform:translateY(-4px)}
 .game:focus-visible{outline:4px solid var(--gold);outline-offset:3px}
+.game .ic{position:absolute;top:22px;right:22px;width:clamp(64px,7vw,104px);height:auto;fill:none;stroke:#fff;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:.92}
 .game .n{font-size:13px;letter-spacing:.3em;text-transform:uppercase;opacity:.85;font-weight:600}
 .game .t{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:clamp(72px,8vw,120px);line-height:.9}
 .game .d{font-size:15px;line-height:1.45;opacity:.92}
@@ -28,6 +29,10 @@ h1 em{color:var(--gold)}
 .qr h2{margin:0 0 8px;font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:40px;line-height:1}
 .qr p{margin:6px 0;color:var(--muted);font-size:16px;line-height:1.5;max-width:56ch}
 .qr code{display:inline-block;margin-top:6px;font-size:15px;color:var(--ink);word-break:break-all;background:#f2efe7;padding:6px 10px;border-radius:8px}
+.reset{margin-top:22px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;font-size:15px;color:var(--muted)}
+.reset button{font:600 15px Inter,Arial,sans-serif;min-height:44px;padding:8px 18px;border-radius:999px;border:2px solid var(--ink);background:#fff;color:var(--ink);cursor:pointer}
+.reset button.danger{background:var(--ink);color:#fff}
+.reset button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 @media (max-width:860px){.games{grid-template-columns:1fr}.game{min-height:0}}
 </style>
 </head>
@@ -37,15 +42,15 @@ h1 em{color:var(--gold)}
 
 <div class="games">
   <a class="game" style="--c:var(--blue)" href="kuldvillak/">
-    <div><div class="n">Mäng</div><div class="t">1</div></div>
+    <svg class="ic" viewBox="0 0 64 64" aria-hidden="true"><rect x="8" y="10" width="48" height="44" rx="5"/><path d="M8 24h48M8 39h48M24 10v44M40 10v44"/></svg><div><div class="n">Mäng</div><div class="t">1</div></div>
     <span class="go">Ava mäng →</span>
   </a>
   <a class="game" style="--c:var(--purple)" href="laululahing/admin.html">
-    <div><div class="n">Mäng</div><div class="t">2</div></div>
+    <svg class="ic" viewBox="0 0 64 64" aria-hidden="true"><path d="M24 46V14l28-6v32"/><circle cx="17" cy="46" r="7"/><circle cx="45" cy="40" r="7"/></svg><div><div class="n">Mäng</div><div class="t">2</div></div>
     <span class="go">Ava mäng →</span>
   </a>
   <a class="game" style="--c:var(--beer)" href="steinholding/">
-    <div><div class="n">Mäng</div><div class="t">3</div></div>
+    <svg class="ic" viewBox="0 0 64 64" aria-hidden="true"><path d="M14 22h28v30a4 4 0 0 1-4 4H18a4 4 0 0 1-4-4z"/><path d="M42 28h6a6 6 0 0 1 6 6v8a6 6 0 0 1-6 6h-6"/><path d="M14 22c-3-8 6-12 10-8 3-6 12-6 14 0 6-2 10 4 6 8"/><path d="M22 32v14M28 32v14M34 32v14"/></svg><div><div class="n">Mäng</div><div class="t">3</div></div>
     <span class="go">Ava mäng →</span>
   </a>
 </div>
@@ -59,9 +64,26 @@ h1 em{color:var(--gold)}
   </div>
 </section>
 
+<div class="reset" id="reset"></div>
+
 <script src="vendor/qrcode.min.js"></script>
 <script>
   var link = new URL("laululahing/", location.href).href;
+  var box = document.getElementById("reset");
+  function btn(t, cls, fn) { var b = document.createElement("button"); b.type = "button"; b.textContent = t; if (cls) b.className = cls; b.addEventListener("click", fn); return b; }
+  function drawReset(state) {
+    box.replaceChildren();
+    if (state === "ask") {
+      box.append("Nullida kõigi kolme mängu punktid ja seis?", btn("Jah, nulli kõik", "danger", function () {
+        try { ["kuldvillak-state-party", "novemberfest-stein-party", "llparty-host:game/state", "llparty-host:subs"].forEach(function (k) { localStorage.removeItem(k); }); } catch (e) {}
+        drawReset("done");
+      }), btn("Tühista", "", function () { drawReset(); }));
+    } else {
+      box.append(btn("Nulli kõik mängud", "", function () { drawReset("ask"); }));
+      if (state === "done") box.append("Nullitud. Kõik mängud algavad puhtalt lehelt.");
+    }
+  }
+  drawReset();
   try { new QRCode(document.getElementById("qrbox"), { text: link, width: 520, height: 520, correctLevel: QRCode.CorrectLevel.M }); } catch (e) {}
 </script>
 </body>

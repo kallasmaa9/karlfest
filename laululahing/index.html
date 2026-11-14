@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>html{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>html{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}a.tool{text-decoration:none;display:inline-flex;align-items:center;box-sizing:border-box}</style>
 <title>Karli Laululahing</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -202,7 +202,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{
 <div id="root"><div class="msg panel" id="boot"><h1>Laululahing</h1>Laen…</div></div>
 
 <script src="../vendor/mqtt.min.js?v=5"></script>
-<script>window.LL_ROLE="phone";</script>
+<script>window.LL_ROLE="phone";window.LL_HOME="../";</script>
 <script src="adapter.js?v=5"></script>
 <script>
 /* ==== SEADISTUS ==== */
@@ -290,6 +290,18 @@ function teamName(st, i) { return (st.names && st.names[i]) || DEFAULT_NAMES[i];
    ========================================================= */
 function startTV() {
   let st = null, key = [], subs = [], loaded = false;
+  let confirmRestart = false;
+  async function restartGame() {
+    await write(() => stateRef.set(Object.assign(freshState(st.names), { total: st.total })));
+    try { for (const d of (await db.collection("subs").get()).docs) { try { await db.doc("subs/" + d.id).delete(); } catch (e) {} } } catch (e) {}
+    showFinal = false; confirmRestart = false; render();
+  }
+  function restartCtl() {
+    return confirmRestart
+      ? el("span", { className: "conn", style: "display:inline-flex;gap:6px;align-items:center;margin:0" }, ["Nullida punktid ja alustada 1. laulust?", el("button", { className: "ghost main", type: "button", textContent: "Jah", onclick: restartGame }), el("button", { className: "ghost", type: "button", textContent: "Ei", onclick: () => { confirmRestart = false; render(); } })])
+      : el("button", { className: "ghost", type: "button", textContent: "Alusta otsast", onclick: () => { confirmRestart = true; render(); } });
+  }
+  function homeCtl() { return window.LL_HOME ? el("a", { className: "ghost", href: window.LL_HOME, textContent: "Avaleht", style: "text-decoration:none;display:inline-flex;align-items:center" }) : null; }
   let lastPhaseKey = "", animateReveal = false, sheet = null, manualOpen = -1, showFinal = false, qrOpen = false;
   const stateRef = db.doc("game/state"), keyRef = db.doc("key/songs");
 
@@ -447,6 +459,7 @@ function startTV() {
       el("button", { className: "ghost", type: "button", onclick: prev }, ["Eelmine", el("span", { className: "k", textContent: "←" })]),
       el("button", { className: "ghost", type: "button", onclick: () => { qrOpen = true; render(); } }, ["QR kaptenitele", el("span", { className: "k", textContent: "Q" })]),
       el("button", { className: "ghost", type: "button", onclick: openSheet, textContent: "Seaded" }),
+      restartCtl(), homeCtl(),
       document.documentElement.requestFullscreen ? el("button", { className: "ghost", type: "button", textContent: document.fullscreenElement ? "Välju täisekraanist" : "Täisekraan", onclick: () => { const p = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); p && p.catch && p.catch(() => {}); } }) : null,
       alertMsg ? el("span", { className: "conn", textContent: alertMsg }) : null
     ]);
@@ -468,7 +481,7 @@ function startTV() {
     show(el("div", { id: "tv" }, [
       el("div", { className: "tvhead" }, [el("div", { className: "logo", textContent: "Lõpptulemused" }), el("div", { className: "roundlbl" }, ["VÕITJA: ", el("b", { textContent: teamName(st, order[0]) })])]),
       el("div", { className: "final" }, pods),
-      el("div", { className: "ctrl" }, [el("button", { className: "ghost", type: "button", onclick: prev, textContent: "Tagasi viimase laulu juurde" }), el("button", { className: "ghost", type: "button", onclick: openSheet, textContent: "Seaded" })])
+      el("div", { className: "ctrl" }, [el("button", { className: "ghost", type: "button", onclick: prev, textContent: "Tagasi viimase laulu juurde" }), el("button", { className: "ghost", type: "button", onclick: openSheet, textContent: "Seaded" }), restartCtl(), homeCtl()])
     ]), sheet);
     setTimeout(() => { caps[order[0]].laugh(); caps[order[2]].cry(); confetti(); }, 1400);
   }
