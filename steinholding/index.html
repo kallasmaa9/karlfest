@@ -247,7 +247,7 @@ const LANE_KEYS = ["1", "2", "3"];
 /* duellis: vasak = 1 või A, parem = 2 või L */
 const EXTRA_KEYS = { a: 0, l: 1 };
 let showBoard = false;
-const STORE = "novemberfest-stein-v1";
+const STORE = "novemberfest-stein-party";
 const REDUCED = (() => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } })();
 const $ = (id) => document.getElementById(id);
 const el = (tag, props, kids) => { const n = document.createElement(tag); if (props) for (const k in props) { if (k.startsWith("on")) n.addEventListener(k.slice(2), props[k]); else if (k in n) n[k] = props[k]; else n.setAttribute(k, props[k]); } (kids || []).forEach(c => c != null && n.append(c)); return n; };

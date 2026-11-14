@@ -261,7 +261,7 @@ function setTitle() {
   $("qtitle").replaceChildren((LANG === "en" ? en : LANG === "both" && en !== et ? et + " / " + en : et) + " · ", el("b", { textContent: VALUES[cur.r] }));
 }
 const VALUES = [10, 20, 30, 40, 50];
-const STORE = "kuldvillak-state-v1";
+const STORE = "kuldvillak-state-party";
 const REDUCED = (() => { try { return matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) { return false; } })();
 
 const fresh = () => ({ used: {}, scores: [0, 0, 0], names: ["Tiim 1", "Tiim 2", "Tiim 3"], step: 10 });

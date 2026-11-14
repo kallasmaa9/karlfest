@@ -2,7 +2,7 @@
    Host (admin.html) hoiab mängu seisu oma brauseris ja saadab selle telefonidele; telefonid saadavad vastused hostile. */
 (function () {
   var ROLE = window.LL_ROLE === "host" ? "host" : "phone";
-  var ROOM = "karlfest-ll-9x4t7m2q";
+  var ROOM = "karlfest-ll-party-4h8d2k";
   var qs = new URLSearchParams(location.search);
   var BROKERS = qs.get("broker") ? [qs.get("broker")] : [
     "wss://broker.emqx.io:8084/mqtt",
@@ -10,7 +10,7 @@
     "wss://test.mosquitto.org:8081/mqtt"
   ];
   var T = "karlfest/" + ROOM + "/";
-  var LS = "ll-" + ROLE + ":";
+  var LS = "llparty-" + ROLE + ":";
 
   function lsGet(k) { try { var v = localStorage.getItem(LS + k); return v == null ? null : JSON.parse(v); } catch (e) { return null; } }
   function lsSet(k, v) { try { if (v == null) localStorage.removeItem(LS + k); else localStorage.setItem(LS + k, JSON.stringify(v)); } catch (e) {} }
