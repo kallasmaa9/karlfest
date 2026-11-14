@@ -97,7 +97,20 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{
 .manual{display:flex;flex-direction:column;gap:6px;width:100%}
 .manual input{background:#fff;color:#111;border:0;border-radius:4px;padding:8px 10px;font-size:15px}
 .edit{position:absolute;top:10px;left:10px;width:40px;height:40px;border-radius:50%;border:1px solid rgba(242,179,61,.5);background:rgba(0,0,0,.3);color:var(--ink);cursor:pointer;font-size:16px}
-.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;opacity:.55;transition:opacity .2s}
+.ctrl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center}
+.ctrl .ghost{opacity:.6}
+.ctrl .ghost:hover,.ctrl .ghost:focus-visible{opacity:1}
+.ctrl .main{opacity:1;min-height:52px;font-size:17px;padding:10px 22px;background:linear-gradient(180deg,var(--gold-hi),var(--gold) 50%,var(--gold-lo));color:#140d00;border:0;font-weight:800;box-shadow:0 3px 0 #000;text-decoration:none;display:inline-flex;align-items:center}
+.ctrl .main .k{background:rgba(0,0,0,.18);color:#140d00}
+.steps3{display:flex;gap:6px;align-items:center;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-right:6px}
+.steps3 span{padding:4px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.25)}
+.steps3 span.on{background:var(--ink);color:#1a0640;border-color:var(--ink)}
+.eq{display:inline-flex;align-items:flex-end;gap:4px;height:1em;vertical-align:-.1em}
+.eq i{width:.22em;background:var(--gold);border-radius:2px;height:30%}
+.eq.on i{animation:eq .9s ease-in-out infinite}
+.eq.on i:nth-child(2){animation-delay:.15s}.eq.on i:nth-child(3){animation-delay:.3s}.eq.on i:nth-child(4){animation-delay:.45s}
+@keyframes eq{0%,100%{height:25%}50%{height:100%}}
+.playing{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:8px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:clamp(13px,1.2vw,20px);color:var(--gold-hi)}
 .ctrl:hover,.ctrl:focus-within{opacity:1}
 .ghost.play{text-decoration:none;display:inline-flex;align-items:center;background:rgba(60,207,99,.2);border-color:var(--ok)}
 .conn{font-size:12px;color:var(--muted);margin-left:8px}
@@ -134,6 +147,16 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{
 .confetti{position:fixed;top:-20px;width:10px;height:16px;pointer-events:none;z-index:30;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
 
+/* telefon: mis praegu toimub */
+.now{display:flex;align-items:center;gap:16px;padding:16px 18px}
+.now .eq{font-size:44px;flex:0 0 auto}
+.now .nowt{font-weight:900;font-size:22px;line-height:1.15}
+.now .nows{color:var(--muted);font-size:15px;margin-top:3px}
+.now.on{box-shadow:inset 0 0 0 2px var(--gold),0 0 30px rgba(255,210,63,.35)}
+.done{padding:20px 18px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center}
+.done .ok{font-weight:900;font-size:24px;color:var(--ok)}
+.done .mine{font-size:20px;font-weight:700;overflow-wrap:anywhere}
+.done .hint2{color:var(--muted);font-size:14px}
 /* ============ TELEFON ============ */
 #phone{max-width:520px;margin:0 auto;min-height:100%;box-sizing:border-box;padding:18px max(16px,env(safe-area-inset-right,0px)) 28px max(16px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:16px}
 .ph-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
@@ -178,9 +201,9 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,a:focus-visible{
 
 <div id="root"><div class="msg panel" id="boot"><h1>Laululahing</h1>Laen…</div></div>
 
-<script src="../vendor/mqtt.min.js"></script>
+<script src="../vendor/mqtt.min.js?v=5"></script>
 <script>window.LL_ROLE="host";window.LL_KEY="eyJsaXN0IjogW3siYXJ0aXN0IjogIlBhcmFkaXNpbyIsICJzb25nIjogIkJhaWxhbmRvIiwgInVybCI6ICJodHRwczovL3lvdXR1LmJlL3hpV3RxVnRkMU9vP3NpPXFUeWh3akdiMkRQdjFSbWMifSwgeyJhcnRpc3QiOiAiQmxvb2Rob3VuZCBHYW5nIiwgInNvbmciOiAiVGhlIEJhZCBUb3VjaCIsICJ1cmwiOiAiaHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj14YXQxR1ZubDgtayJ9LCB7ImFydGlzdCI6ICJCYXNzaHVudGVyIiwgInNvbmciOiAiRG90QSIsICJ1cmwiOiAiaHR0cHM6Ly95b3V0dS5iZS9xVHNhUzFUbS1JYz9zaT1aekxwdFB4cXJOQkFKNXU5JnQ9MjQifSwgeyJhcnRpc3QiOiAiRGF2aWQgR3VldHRhIGZlYXQuIEFrb24iLCAic29uZyI6ICJTZXh5IENoaWNrIiwgInVybCI6ICJodHRwczovL3lvdXR1LmJlL045aGF6bXNVeHJNP3NpPUVSWU5RTVJ1MEU3TlE4dFEmdD0xMSJ9LCB7ImFydGlzdCI6ICJBdmljaWkgdnMgTmlja3kgUm9tZXJvIiwgInNvbmciOiAiSSBDb3VsZCBCZSBUaGUgT25lIiwgInVybCI6ICJodHRwczovL3lvdXR1LmJlL2JlazF5MnVpUUdBP3NpPUtXRzJqVk1xVkxXUld0QlYmdD01OSJ9LCB7ImFydGlzdCI6ICJOYXVnaHR5IEJveSBmdC4gU2FtIFNtaXRoIiwgInNvbmciOiAiTGEgTGEgTGEiLCAidXJsIjogImh0dHBzOi8veW91dHUuYmUvM08xXzN6QlVLTTg/c2k9a0phSXdiczJPSkg5N1Q1cSZ0PTMwIn0sIHsiYXJ0aXN0IjogIkJvYiBTaW5jbGFyIiwgInNvbmciOiAiV29ybGQgSG9sZCBPbiIsICJ1cmwiOiAiaHR0cHM6Ly95b3V0dS5iZS9YcGRwVzB6OXhuUT9zaT1iRzJCT2lMcHpzZXhTcGNtIn0sIHsiYXJ0aXN0IjogIkFCQkEiLCAic29uZyI6ICJHaW1tZSEgR2ltbWUhIEdpbW1lISIsICJ1cmwiOiAiaHR0cHM6Ly95b3V0dS5iZS9YRWpMb0hkYlZlRT9zaT1VSk15cXQ2ODJnSG5rbktuJnQ9MSJ9LCB7ImFydGlzdCI6ICJNb2Rlcm4gVGFsa2luZyIsICJzb25nIjogIkNoZXJpIENoZXJpIExhZHkiLCAidXJsIjogImh0dHBzOi8veW91dHUuYmUvZENmWWgxMEcxQkE/c2k9SW0tMWZpLTVGazhyaEs3dCJ9LCB7ImFydGlzdCI6ICJTaW1wbHkgUmVkIiwgInNvbmciOiAiU3VucmlzZSIsICJ1cmwiOiAiaHR0cHM6Ly95b3V0dS5iZS9QRTNnMnplQlZRUT9zaT1LcnRUYlhBdm9ud0ZNamdiJnQ9MjMifSwgeyJhcnRpc3QiOiAiUGF1bCBNY0NhcnRuZXksIE1pY2hhZWwgSmFja3NvbiIsICJzb25nIjogIlNheSBTYXkgU2F5IiwgInVybCI6ICJodHRwczovL3lvdXR1LmJlL2xoZWRkZkQtSnk0P3NpPXFhMHVOMnNYazNDVXgwSjImdD02NyJ9LCB7ImFydGlzdCI6ICJUQU5ERU0uQsOYWVoiLCAic29uZyI6ICJwZW50bGkiLCAidXJsIjogImh0dHBzOi8veW91dHUuYmUvS1ZKQzhhemh1ZE0/c2k9QWtLSVFPNVVibHg0UzJKMyZ0PTExIn0sIHsiYXJ0aXN0IjogIkVyaWNoIEtyaWVnZXIiLCAic29uZyI6ICJOaWkgUGV0bGlrIE9uIMOVbm4iLCAidXJsIjogImh0dHBzOi8veW91dHUuYmUvaXB2ZnhHbFAyMjA/c2k9WDNxY1djWkRxR2VNYXFQTCJ9LCB7ImFydGlzdCI6ICJNYXJpIExpaXMgZmVhdC4gQ2FhdGVyIiwgInNvbmciOiAiTWlzIHRlZ2VtYSBuw7zDvGQgcGVhbiIsICJ1cmwiOiAiaHR0cHM6Ly95b3V0dS5iZS9ySHFRNE95R1VSTT9zaT1UREdqQktRNE5MT1RkWWZBIn0sIHsiYXJ0aXN0IjogIkVzdGluIiwgInNvbmciOiAiRXNpbWVuZSBsdW1pIiwgInVybCI6ICJodHRwczovL3lvdXR1LmJlL0RycElvVUlhcTRrP3NpPUhQS0g1UTdZZm5zT0I2VjAmdD01In1dfQ==";</script>
-<script src="adapter.js"></script>
+<script src="adapter.js?v=5"></script>
 <script>
 /* ==== SEADISTUS ==== */
 const APP_URL = new URL("./", location.href).href.split("#")[0].split("?")[0];
@@ -334,7 +357,7 @@ function startTV() {
     if (sheet || tag === "INPUT" || tag === "TEXTAREA") return;
     if (qrOpen) { if (e.key === "Escape" || e.key === "q" || e.key === "Q") { e.preventDefault(); qrOpen = false; render(); } return; }
     if (e.key === "q" || e.key === "Q") { e.preventDefault(); qrOpen = true; render(); return; }
-    if (e.key === "Enter") { e.preventDefault(); if (st && st.phase === "open") reveal(); }
+    if (e.key === "Enter") { e.preventDefault(); if (st && st.phase === "open") reveal(); else if (st) next(); }
     else if (e.key === "ArrowRight" || e.key === "n" || e.key === "N") { e.preventDefault(); next(); }
     else if (e.key === "ArrowLeft") { e.preventDefault(); prev(); }
   });
@@ -374,7 +397,7 @@ function startTV() {
     for (let i = 1; i <= st.total; i++) dots.append(el("span", { className: "dot" + (i === r ? " now" : st.rounds && st.rounds[i] ? " done" : "") }));
     const head = el("div", { className: "tvhead" }, [
       el("div", { className: "logo", textContent: "Laululahing" }),
-      el("div", { className: "roundbox" }, [el("div", { className: "roundlbl" }, ["LAUL ", el("b", { textContent: r }), " / " + st.total]), dots])
+      el("div", { className: "roundbox" }, [el("div", { className: "roundlbl" }, ["LAUL ", el("b", { textContent: r }), " / " + st.total]), dots, st.phase === "open" && st.playing === r ? el("div", { className: "playing" }, [el("span", { className: "eq on", "aria-hidden": "true" }, [el("i"), el("i"), el("i"), el("i")]), "Laul mängib – kaptenid vastavad"]) : null])
     ]);
 
     let banner = null;
@@ -410,17 +433,22 @@ function startTV() {
       return card;
     });
 
+    const url = key[r - 1] && key[r - 1].url;
+    const played = st.playing === r;
+    const step = st.phase !== "open" ? 3 : played || !url ? 2 : 1;
+    const answered = [0, 1, 2].filter(t => !!latest(t, r)).length;
+    const playBtn = url ? el("a", { className: step === 1 ? "ghost main" : "ghost play", href: url, target: "_blank", rel: "noopener", textContent: played ? "▶ Mängi uuesti" : "▶ Mängi laul", onclick: () => { write(() => stateRef.update({ playing: r })); } }) : null;
+    const revealBtn = st.phase === "open" ? el("button", { className: step === 2 ? "ghost main" : "ghost", type: "button", onclick: reveal }, ["Ava vastused (" + answered + "/3)", el("span", { className: "k", textContent: "Enter" })]) : null;
+    const nextBtn = el("button", { className: step === 3 ? "ghost main" : "ghost", type: "button", onclick: next }, [st.round >= st.total && st.phase === "revealed" ? "Lõpptulemused" : "Järgmine laul", el("span", { className: "k", textContent: step === 3 ? "Enter" : "→" })]);
     const ctrl = el("div", { className: "ctrl" }, [
-      st.phase === "open"
-        ? el("button", { className: "ghost", type: "button", onclick: reveal }, ["Ava vastused", el("span", { className: "k", textContent: "Enter" })])
-        : el("button", { className: "ghost", type: "button", onclick: reopen, textContent: "Ava vastamine uuesti" }),
-      key[r - 1] && key[r - 1].url ? el("a", { className: "ghost play", href: key[r - 1].url, target: "_blank", rel: "noopener", textContent: "▶ Mängi laul" }) : null,
+      el("span", { className: "steps3", "aria-hidden": "true" }, [el("span", { className: step === 1 ? "on" : "", textContent: "1 Mängi" }), el("span", { className: step === 2 ? "on" : "", textContent: "2 Ava" }), el("span", { className: step === 3 ? "on" : "", textContent: "3 Edasi" })]),
+      playBtn, revealBtn, st.phase === "revealed" ? nextBtn : null,
+      st.phase === "revealed" ? el("button", { className: "ghost", type: "button", onclick: reopen, textContent: "Ava vastamine uuesti" }) : nextBtn,
       el("button", { className: "ghost", type: "button", onclick: prev }, ["Eelmine", el("span", { className: "k", textContent: "←" })]),
-      el("button", { className: "ghost", type: "button", onclick: next }, [st.round >= st.total && st.phase === "revealed" ? "Lõpptulemused" : "Järgmine laul", el("span", { className: "k", textContent: "→" })]),
       el("button", { className: "ghost", type: "button", onclick: () => { qrOpen = true; render(); } }, ["QR kaptenitele", el("span", { className: "k", textContent: "Q" })]),
       el("button", { className: "ghost", type: "button", onclick: openSheet, textContent: "Seaded" }),
       document.documentElement.requestFullscreen ? el("button", { className: "ghost", type: "button", textContent: document.fullscreenElement ? "Välju täisekraanist" : "Täisekraan", onclick: () => { const p = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); p && p.catch && p.catch(() => {}); } }) : null,
-      el("span", { className: "conn", textContent: alertMsg || (key.length ? "Vastuste võti: " + key.length + " laulu" : "Vastuste võti puudub – lisa Seadetes") })
+      alertMsg ? el("span", { className: "conn", textContent: alertMsg }) : null
     ]);
 
     const tv = el("div", { id: "tv" }, [head, banner, el("div", { className: "teams" }, cards), ctrl]);
@@ -507,7 +535,7 @@ async function startPhone() {
   const uid = await user.id();
   if (!uid) { message("Laululahing", "Vastuste saatmiseks ava link Claude'i kontoga sisse logituna."); return; }
   const myRef = db.doc("subs/" + uid), stateRef = db.doc("game/state");
-  let st = null, me = null, loaded = 0, draft = { artist: "", song: "" }, draftRound = 0, sending = false, err = "", lastRevealKey = "";
+  let st = null, me = null, loaded = 0, draft = { artist: "", song: "" }, draftRound = 0, sending = false, err = "", lastRevealKey = "", editing = false;
   const caps = [0, 1, 2].map(i => captain(i));
   const loadTimer = setTimeout(() => { if (loaded < 2) message("Laululahing", "Mänguga ei saa ühendust. Kontrolli internetti ja oota hetk."); }, 10000);
   stateRef.onSnapshot(s => { st = s.exists ? s.data() : null; loaded |= 1; if (loaded === 3) clearTimeout(loadTimer); render(); }, e => message("Laululahing", "Mängu ei saa lugeda (" + e.code + ")."));
@@ -524,12 +552,12 @@ async function startPhone() {
     sending = true; err = ""; render();
     try { await myRef.update({ ans: { [r]: { artist: draft.artist.trim(), song: draft.song.trim(), at: Date.now() } } }); }
     catch (e) { err = e && e.code === "invalid_argument" ? "Sul pole õigust vastuseid saata. Palu Karlil jagada link sinuga toimetaja (Editor) õigusega." : "Saatmine ebaõnnestus (" + (e && e.code) + "). Proovi uuesti."; }
-    sending = false; render();
+    sending = false; if (!err) editing = false; render();
   }
 
   function render() {
     if (loaded !== 3) return;
-    if (!st) { message("Laululahing", "Mäng pole veel alanud. Oota, kuni Karl selle käivitab."); return; }
+    if (!st) { message("Laululahing", "Ootan mängu algust… Hoia see leht lahti, mäng ilmub siia ise. / Waiting for the game to start – keep this page open."); return; }
     const myTeam = me && me.game === st.game && typeof me.team === "number" ? me.team : -1;
     const head = el("div", { className: "ph-head" }, [el("div", { className: "logo", textContent: "Laululahing" }), myTeam >= 0 ? el("div", { className: "ph-round" }, ["LAUL ", el("b", { textContent: st.round }), "/" + st.total]) : null]);
     const errBox = err ? el("div", { className: "err", role: "alert", textContent: err }) : null;
@@ -559,15 +587,29 @@ async function startPhone() {
       body.splice(2, 0, el("div", { style: "display:flex;justify-content:center" }, [caps[myTeam]]));
     } else {
       const mine = me.ans && me.ans[r];
-      if (draftRound !== r) { draftRound = r; draft = { artist: (mine && mine.artist) || "", song: (mine && mine.song) || "" }; }
-      const ai = el("input", { type: "text", id: "artist", value: draft.artist, autocomplete: "off", autocapitalize: "words", oninput: e => { draft.artist = e.target.value; } });
-      const si = el("input", { type: "text", id: "song", value: draft.song, autocomplete: "off", autocapitalize: "sentences", oninput: e => { draft.song = e.target.value; } });
-      body.push(el("form", { className: "form panel", onsubmit: e => { e.preventDefault(); send(r); } }, [
-        el("label", { for: "artist", textContent: "Artist" }), ai,
-        el("label", { for: "song", textContent: "Laul / Song" }), si,
-        el("button", { className: "btn", type: "submit", disabled: sending, textContent: sending ? "Saadan…" : mine ? "Uuenda vastust / Update" : "Saada vastus / Send" }),
-        mine ? el("div", { className: "sent", textContent: "Vastus saadetud ✓ Saad seda muuta, kuni Karl vastused avab. / Sent ✓ You can change it until the reveal." }) : null
+      if (draftRound !== r) { draftRound = r; editing = false; draft = { artist: (mine && mine.artist) || "", song: (mine && mine.song) || "" }; }
+      const playing = st.playing === r;
+      body.push(el("div", { className: "now panel" + (playing ? " on" : "") }, [
+        el("span", { className: "eq" + (playing ? " on" : ""), "aria-hidden": "true" }, [el("i"), el("i"), el("i"), el("i")]),
+        el("div", {}, [el("div", { className: "nowt", textContent: playing ? "Laul " + r + " mängib – vasta nüüd!" : "Laul " + r + " algab kohe" }),
+          el("div", { className: "nows", textContent: playing ? "Song " + r + " is playing – answer now!" : "Song " + r + " starts soon. You can already type." })])
       ]));
+      if (mine && !editing) {
+        body.push(el("div", { className: "done panel" }, [
+          el("div", { className: "ok", textContent: "Vastus saadetud ✓ / Sent ✓" }),
+          el("div", { className: "mine", textContent: (mine.artist || "–") + " – " + (mine.song || "–") }),
+          el("button", { className: "ghost editbtn", type: "button", textContent: "Muuda vastust / Change answer", onclick: () => { editing = true; draft = { artist: mine.artist || "", song: mine.song || "" }; render(); } }),
+          el("div", { className: "hint2", textContent: "Vaata telerit – vastused avatakse korraga. / Watch the TV for the reveal." })
+        ]));
+      } else {
+        const ai = el("input", { type: "text", id: "artist", value: draft.artist, autocomplete: "off", autocapitalize: "words", enterkeyhint: "next", oninput: e => { draft.artist = e.target.value; } });
+        const si = el("input", { type: "text", id: "song", value: draft.song, autocomplete: "off", autocapitalize: "sentences", enterkeyhint: "send", oninput: e => { draft.song = e.target.value; } });
+        body.push(el("form", { className: "form panel", onsubmit: e => { e.preventDefault(); send(r); } }, [
+          el("label", { for: "artist", textContent: "Artist" }), ai,
+          el("label", { for: "song", textContent: "Laul / Song" }), si,
+          el("button", { className: "btn", type: "submit", disabled: sending, textContent: sending ? "Saadan…" : mine ? "Uuenda vastust / Update" : "Saada vastus / Send" })
+        ]));
+      }
     }
     body.push(el("button", { className: "linkbtn", type: "button", textContent: "Vaheta tiimi / Change team", onclick: () => { myRef.update({ team: -1 }).catch(() => {}); } }));
     const active = document.activeElement && document.activeElement.id;

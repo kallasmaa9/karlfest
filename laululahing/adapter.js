@@ -7,7 +7,8 @@
   var BROKERS = qs.get("broker") ? [qs.get("broker")] : [
     "wss://broker.emqx.io:8084/mqtt",
     "wss://broker.hivemq.com:8884/mqtt",
-    "wss://test.mosquitto.org:8081/mqtt"
+    "wss://test.mosquitto.org:8081/mqtt",
+    "wss://mqtt.eclipseprojects.io/mqtt"
   ];
   var T = "karlfest/" + ROOM + "/";
   var LS = "llparty-" + ROLE + ":";
@@ -140,6 +141,15 @@
   if (ROLE === "host" && !lsGet("key/songs") && window.LL_KEY) {
     try { lsSet("key/songs", JSON.parse(decodeURIComponent(escape(atob(window.LL_KEY))))); } catch (e) {}
   }
+
+  /* sama brauseri teine aken (nt teler + juhtpult) hoiab seisu sünkroonis */
+  window.addEventListener("storage", function (e) {
+    if (!e.key || e.key.indexOf(LS) !== 0) return;
+    var k = e.key.slice(LS.length), v = null;
+    try { v = e.newValue == null ? null : JSON.parse(e.newValue); } catch (err) { return; }
+    if (k === "subs") { subs = v || {}; fireSubs(); }
+    else if (k !== "uid") { docs[k] = v; fire(k); }
+  });
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", connect); else connect();
   setInterval(resend, 3500);
